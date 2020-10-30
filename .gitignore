@@ -1,0 +1,4 @@
+*.pth
+
+maml-cifar-fs/*
+*.ipynb
