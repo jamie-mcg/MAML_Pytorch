@@ -33,3 +33,4 @@ class TaskDataset(Dataset):
         return {
             "train": (task.x_train, task.y_train),
             "test": (task.x_test, task.y_test)
+        }
