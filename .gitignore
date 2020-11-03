@@ -1,4 +1,6 @@
 *.pth
 
+__pycache__
+
 maml-cifar-fs/*
 *.ipynb
