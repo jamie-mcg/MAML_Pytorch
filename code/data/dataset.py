@@ -27,7 +27,7 @@ class TaskDataset(Dataset):
         return len(self._num_tasks)
 
     def __getitem__(self, idx):
-        task = task_dict[self._task_type](a=self._parameters[0,idx], b=self._parameters[1, idx])
+        task = task_dict[self._task_type](a=self._parameters[0][idx], b=self._parameters[1][idx])
 
         return {
             "train": (task.x_train, task.y_train),
@@ -36,13 +36,22 @@ class TaskDataset(Dataset):
 
 
 if __name__ == "__main__":
+
+    import matplotlib.pyplot as plt
+
     parameter_args = {
         "task": "linear",
         "centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 1000
+        "num_tasks": 10
     }
 
-    data = TaskDataset(parameter_args)
+    dataset = TaskDataset(parameter_args)
 
-    print(data._parameters)
+    fig = plt.figure()
+
+    for data in dataset:
+        plt.plot(data["train"][0], data["train"][1])
+
+    plt.show()
+        
