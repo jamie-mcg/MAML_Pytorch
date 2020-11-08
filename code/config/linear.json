@@ -1,7 +1,8 @@
 {
     "Experiment": {
         "version": 0.0,
-        "description": "Linear Tasks experiment using MAML."
+        "description": "Linear Tasks experiment using MAML.",
+        "path": "../results"
     },
     "Dataset": {
         "task": "linear",

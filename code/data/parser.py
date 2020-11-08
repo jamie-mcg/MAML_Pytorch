@@ -5,6 +5,10 @@ class Parser():
         self._config_args = config
 
     @property
+    def experiment_args(self):
+        return self._config_args["Experiment"]
+
+    @property
     def dataset_args(self):
         return self._config_args["Dataset"]
 
@@ -15,6 +19,7 @@ class Parser():
     @property
     def maml_args(self):
         return self._config_args["MAML"]
+
     
     def parse(self):
-        return self.dataset_args, self.model_args, self.maml_args
+        return self.experiment_args, self.dataset_args, self.model_args, self.maml_args

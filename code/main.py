@@ -3,6 +3,7 @@ import json
 import matplotlib.pyplot as plt
 
 from data import TaskDataset, Parser
+from reports import ReportManager
 
 from models import LinearRegression
 
@@ -30,10 +31,12 @@ if __name__ == "__main__":
 
     parser = Parser(config)
 
-    dataset_args, model_args, maml_args = parser.parse()
+    exp_args, dataset_args, model_args, maml_args = parser.parse()
 
     # Create a report
-    # report = ReportManager()
+    report = ReportManager(exp_args["path"])
+    report.add_section(section="config", config=config)
+    report.save()
 
     # Add data descriptions to report
 
