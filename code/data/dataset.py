@@ -3,7 +3,7 @@ import numpy as np
 import torch
 
 from torch.utils.data import Dataset
-from linear_generator import LinearTask
+from .linear_generator import LinearTask
 
 task_dict = {
     "linear": LinearTask
@@ -20,7 +20,7 @@ class TaskDataset(Dataset):
 
     def generate_parameters(self, parameter_args):
         self._parameters = []
-        for parameter in parameter_args["centers"]:
+        for parameter in parameter_args["param_centers"]:
             self._parameters.append(np.random.uniform(parameter, self._std_dev, self._num_tasks))
 
     def __len__(self):

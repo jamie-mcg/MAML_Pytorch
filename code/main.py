@@ -1,4 +1,8 @@
 import argparse
+import json
+import matplotlib.pyplot as plt
+
+from data import TaskDataset, Parser
 
 from models import LinearRegression
 
@@ -34,16 +38,23 @@ if __name__ == "__main__":
     # Add data descriptions to report
 
     # Create dataset
-    dataset = TaskDataset(**dataset_args)
+    dataset = TaskDataset(dataset_args)
+
+    fig = plt.figure()
+
+    for data in dataset:
+        plt.plot(data["train"][0], data["train"][1])
+
+    plt.show()
 
     # Create models and MAML objects
-    base_learner = BASE_LEARNERS[model_args["model_type"]]()
+    # base_learner = BASE_LEARNERS[model_args["model_type"]]()
 
-    maml = MAML(base_learner, **maml_args)
+    # maml = MAML(base_learner, **maml_args)
 
     # Report details of model and MAML
 
     # Begin training of MAML
-    maml.train(**training_args)
+    # maml.train(**training_args)
 
     # Output results of MAML to report

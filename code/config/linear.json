@@ -1,0 +1,20 @@
+{
+    "Experiment": {
+        "version": 0.0,
+        "description": "Linear Tasks experiment using MAML."
+    },
+    "Dataset": {
+        "task": "linear",
+        "param_centers": [2.0, 3.0],
+        "std_dev": 0.2,
+        "num_tasks": 10
+    },
+    "Model": {
+        "type": "Linear"
+    },
+    "MAML": {
+        "alpha": 0.2,
+        "beta": 0.2,
+        "inner_criterion": "mse"
+    }
+}
