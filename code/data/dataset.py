@@ -54,4 +54,3 @@ if __name__ == "__main__":
         plt.plot(data["train"][0], data["train"][1])
 
     plt.show()
-        
