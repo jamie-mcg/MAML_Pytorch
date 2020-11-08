@@ -6,6 +6,10 @@ class LinearRegression(nn.Module):
     def __init__(self):
         super(LinearRegression, self).__init__()
 
-    def forward(self, x, weights):
-        x = F.linear(x, weights[0], weight[1])
-        return x
+        self._linear = nn.Linear()
+
+    def forward(self, x, weights=None):
+        if weights is not None:
+            return F.linear(x, weights[0], weight[1])
+        else:
+            return self._linear(x)
