@@ -13,7 +13,7 @@ if __name__ == "__main__":
         with open(args.config) as json_file:
             config = json.load(json_file)
     else: 
-        raise ValueError('No config file provided as input. Please provide using the --config flag.')
+        raise ValueError('')
 
     # Parse the arguments
 
