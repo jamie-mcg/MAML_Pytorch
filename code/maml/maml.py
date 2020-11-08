@@ -10,7 +10,7 @@ OPTIMIZER = {
 }
 
 class MAML(nn.Module):
-    def __init__(self, model, alpha, beta, inner_steps, epochs, metatrain_dataloader, metatest_dataloader, 
+    def __init__(self, model, alpha, beta, inner_steps, metatrain_dataloader, metatest_dataloader, 
                     inner_criterion="mse", optimizer="adam"):
         self._model = model
 
@@ -20,7 +20,6 @@ class MAML(nn.Module):
         self._beta = beta
 
         self._inner_steps = inner_steps
-        self._epochs = epochs
 
         self._metatrain_dataloader = metatrain_dataloader
         self._metatest_dataloader = metatest_dataloader
@@ -54,10 +53,10 @@ class MAML(nn.Module):
 
         return float(mt_loss)
 
-    def forward(self):
+    def train(self, epochs):
         meta_iterations = 0
 
-        for epoch in range(self._epochs):
+        for epoch in range(epochs):
             epoch_loss = 0
             running_loss = 0
 
@@ -68,6 +67,9 @@ class MAML(nn.Module):
                 meta_iterations += 1
 
                 # if meta_iterations % 10 == 0:
+
+    def __call__(self, epochs):
+        self.train(epochs)
                     
 
 

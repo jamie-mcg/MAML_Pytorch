@@ -1,5 +1,12 @@
 import argparse
 
+from models import LinearRegression
+
+from maml import MAML
+
+BASE_LEARNERS = {
+    "linearregression": LinearRegression
+}
 
 
 if __name__ == "__main__":
@@ -19,18 +26,24 @@ if __name__ == "__main__":
 
     parser = Parser(config)
 
-    config_json, experiment_args, dataset_args, model_args, loss_args, training_args = parser.parse()
+    dataset_args, model_args, maml_args = parser.parse()
 
     # Create a report
+    # report = ReportManager()
 
     # Add data descriptions to report
 
     # Create dataset
+    dataset = TaskDataset(**dataset_args)
 
     # Create models and MAML objects
+    base_learner = BASE_LEARNERS[model_args["model_type"]]()
+
+    maml = MAML(base_learner, **maml_args)
 
     # Report details of model and MAML
 
     # Begin training of MAML
+    maml.train(**training_args)
 
     # Output results of MAML to report
