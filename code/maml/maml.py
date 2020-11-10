@@ -14,7 +14,7 @@ OPTIMIZER = {
 
 class MAML(nn.Module):
     def __init__(self, model, alpha, beta, inner_steps, metatrain_dataloader, metatest_dataloader, 
-                    inner_criterion="mse", optimizer="adam", batch_size=2):
+                    inner_criterion="mse", optimizer="adam", batch_size=2, print_every=100):
         super(MAML, self).__init__()
 
         self._model = model
@@ -32,6 +32,8 @@ class MAML(nn.Module):
 
         self._inner_criterion = CRITERION[inner_criterion.lower()]()
         self._optimizer = OPTIMIZER[optimizer.lower()](model.parameters(), beta)
+
+        self._print_every = print_every
 
     def inner_loop(self, X_train, y_train, X_test, y_test, valid=False):
         
@@ -74,7 +76,7 @@ class MAML(nn.Module):
                 self._optimizer.step()
                 meta_iterations += 1
 
-                if meta_iterations % 50 == 0:
+                if meta_iterations % self._print_every == 0:
                     mt_running_loss = 0
                     for m, mt_data in enumerate(self._metatest_dataloader):
                         mt_X_train, mt_y_train = mt_data["train"]
@@ -82,9 +84,9 @@ class MAML(nn.Module):
 
                         mt_losses = list(map(self.inner_loop, mt_X_train, mt_y_train, mt_X_test, mt_y_test, repeat(True)))
 
-                        mt_running_loss += np.mean(losses)
+                        mt_running_loss += np.mean(mt_losses)
 
-                    mt_valid_loss = mt_running_loss / m
+                    mt_valid_loss = mt_running_loss / (m + 1)
 
                     print(f"Meta iteration: {meta_iterations} .. Training loss: {running_loss / meta_iterations}")
                     print(f"Validation loss: {mt_valid_loss}")

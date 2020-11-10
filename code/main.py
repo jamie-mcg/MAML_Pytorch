@@ -32,7 +32,6 @@ if __name__ == "__main__":
         raise ValueError('')
 
     # Parse the arguments
-
     parser = Parser(config)
 
     exp_args, train_dataset_args, valid_dataset_args, model_args, maml_args, training_args = parser.parse()
@@ -52,13 +51,6 @@ if __name__ == "__main__":
     # Create dataset
     train_dataset = TaskDataset(train_dataset_args)
     valid_dataset = TaskDataset(valid_dataset_args)
-
-    # fig = plt.figure()
-
-    # for data in dataset:
-    #     plt.plot(data["train"][0], data["train"][1])
-
-    # plt.show()
 
     # Create dataloaders
     train_dataloader = DataLoader(train_dataset, batch_size=2)

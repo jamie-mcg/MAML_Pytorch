@@ -25,11 +25,12 @@
         }
     },
     "MAML": {
-        "alpha": 0.01,
+        "alpha": 0.05,
         "beta": 0.01,
-        "inner_steps": 5,
+        "inner_steps": 1,
         "inner_criterion": "mse",
-        "optimizer": "adam"
+        "optimizer": "adam",
+        "print_every": 100
     },
     "training": {
         "epochs": 1
