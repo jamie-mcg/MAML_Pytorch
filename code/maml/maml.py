@@ -82,9 +82,9 @@ class MAML(nn.Module):
 
                         mt_losses = list(map(self.inner_loop, mt_X_train, mt_y_train, mt_X_test, mt_y_test, repeat(True)))
 
-                        mt_running_loss += np.sum(losses)
+                        mt_running_loss += np.mean(losses)
 
-                    mt_valid_loss = mt_running_loss / len(self._metatest_dataloader)
+                    mt_valid_loss = mt_running_loss / m
 
                     print(f"Meta iteration: {meta_iterations} .. Training loss: {running_loss / meta_iterations}")
                     print(f"Validation loss: {mt_valid_loss}")

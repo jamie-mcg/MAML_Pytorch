@@ -1,6 +1,10 @@
 import argparse
 import json
+import random
+import numpy as np
 import matplotlib.pyplot as plt
+
+import torch
 from torch.utils.data import DataLoader
 
 from data import TaskDataset, Parser
@@ -13,7 +17,6 @@ from maml import MAML
 BASE_LEARNERS = {
     "linear": LinearRegression
 }
-
 
 if __name__ == "__main__":
 
@@ -33,6 +36,11 @@ if __name__ == "__main__":
     parser = Parser(config)
 
     exp_args, train_dataset_args, valid_dataset_args, model_args, maml_args, training_args = parser.parse()
+
+    if exp_args["seed"]:
+        torch.random.manual_seed(exp_args["seed"])
+        np.random.seed(exp_args["seed"])
+        random.seed(exp_args["seed"])
 
     # Create a report
     report = ReportManager(exp_args["path"])

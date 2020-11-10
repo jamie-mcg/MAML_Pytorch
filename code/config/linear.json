@@ -2,7 +2,8 @@
     "Experiment": {
         "version": 0.0,
         "description": "Linear Tasks experiment using MAML.",
-        "path": "../results"
+        "path": "../results",
+        "seed": 1
     },
     "Dataset - metatrain": {
         "task": "linear",
