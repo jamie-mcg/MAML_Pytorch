@@ -2,6 +2,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from itertools import repeat
+
 CRITERION = {
     "mse": nn.MSELoss
 }
@@ -31,13 +33,7 @@ class MAML(nn.Module):
         self._inner_criterion = CRITERION[inner_criterion.lower()]()
         self._optimizer = OPTIMIZER[optimizer.lower()](model.parameters(), beta)
 
-    # def weight_update(self, weights, grads):
-    #     for w, g in zip(weights, grads):
-    #         w -= self._alpha * g
-
-    #     return weights
-
-    def inner_loop(self, X_train, y_train, X_test, y_test):
+    def inner_loop(self, X_train, y_train, X_test, y_test, valid=False):
         
         temp_weights = [param for param in self._model.parameters()]
 
@@ -47,13 +43,13 @@ class MAML(nn.Module):
 
             grads = torch.autograd.grad(loss, temp_weights)
             
-            # temp_weights = self.weight_update(temp_weights, grads)
             temp_weights = [w - self._alpha * g for w, g in zip(temp_weights, grads)]
 
         mt_output = self._model(X_test, temp_weights)
         mt_loss = self._inner_criterion(mt_output, y_test)
-        mt_loss.backward()
-        # print(f"Test loss: {mt_loss} \n")
+
+        if not valid:
+            mt_loss.backward()
 
         return float(mt_loss)
 
@@ -79,7 +75,19 @@ class MAML(nn.Module):
                 meta_iterations += 1
 
                 if meta_iterations % 50 == 0:
-                    print(f"Meta iteration: {meta_iterations} .. Running loss: {running_loss / meta_iterations}")
+                    mt_running_loss = 0
+                    for m, mt_data in enumerate(self._metatest_dataloader):
+                        mt_X_train, mt_y_train = mt_data["train"]
+                        mt_X_test, mt_y_test = mt_data["test"]
+
+                        mt_losses = list(map(self.inner_loop, mt_X_train, mt_y_train, mt_X_test, mt_y_test, repeat(True)))
+
+                        mt_running_loss += np.sum(losses)
+
+                    mt_valid_loss = mt_running_loss / len(self._metatest_dataloader)
+
+                    print(f"Meta iteration: {meta_iterations} .. Training loss: {running_loss / meta_iterations}")
+                    print(f"Validation loss: {mt_valid_loss}")
 
     def __call__(self, epochs):
         self.train(epochs)

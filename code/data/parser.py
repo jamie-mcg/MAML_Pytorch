@@ -29,4 +29,4 @@ class Parser():
         return self._config_args["training"]
     
     def parse(self):
-        return self.experiment_args, self.train_dataset_args, self.train_dataset_args, self.model_args, self.maml_args, self.training_args
+        return self.experiment_args, self.train_dataset_args, self.valid_dataset_args, self.model_args, self.maml_args, self.training_args
