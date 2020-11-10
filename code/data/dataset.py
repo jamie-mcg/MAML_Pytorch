@@ -24,14 +24,14 @@ class TaskDataset(Dataset):
             self._parameters.append(np.random.uniform(parameter, self._std_dev, self._num_tasks))
 
     def __len__(self):
-        return len(self._num_tasks)
+        return self._num_tasks
 
     def __getitem__(self, idx):
         task = task_dict[self._task_type](a=self._parameters[0][idx], b=self._parameters[1][idx])
 
         return {
-            "train": (task.x_train, task.y_train),
-            "test": (task.x_test, task.y_test)
+            "train": (torch.from_numpy(task.x_train).float().view(-1, 1), torch.from_numpy(task.y_train).float().view(-1, 1)),
+            "test": (torch.from_numpy(task.x_test).float().view(-1, 1), torch.from_numpy(task.y_test).float().view(-1, 1))
         }
 
 

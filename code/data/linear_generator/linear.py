@@ -13,21 +13,21 @@ class LinearTask():
 
     @property
     def x_train(self):
-        return self._x_train
+        return np.array([self._x_train])
 
     @property
     def x_test(self):
-        return self._x_test
+        return np.array([self._x_test])
 
     @property
     def y_train(self):
         noise = self._noise_level * np.random.uniform(-1, 1, self._num_points)
 
-        return self._a * self._x_train + self._b + noise
+        return np.array([self._a * self._x_train + self._b + noise])
 
     @property
     def y_test(self):
         noise = self._noise_level * np.random.uniform(-1, 1, self._num_points)
 
-        return self._a * self._x_test + self._b + noise
+        return np.array([self._a * self._x_test + self._b + noise])
 

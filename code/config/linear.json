@@ -4,18 +4,33 @@
         "description": "Linear Tasks experiment using MAML.",
         "path": "../results"
     },
-    "Dataset": {
+    "Dataset - metatrain": {
         "task": "linear",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
         "num_tasks": 10
     },
+    "Dataset - metatest": {
+        "task": "linear",
+        "param_centers": [2.0, 3.0],
+        "std_dev": 0.2,
+        "num_tasks": 4
+    },
     "Model": {
-        "type": "Linear"
+        "type": "linear",
+        "args": {
+            "input_dim": 1,
+            "output_dim": 1
+        }
     },
     "MAML": {
-        "alpha": 0.2,
-        "beta": 0.2,
-        "inner_criterion": "mse"
+        "alpha": 0.001,
+        "beta": 0.001,
+        "inner_steps": 5,
+        "inner_criterion": "mse",
+        "optimizer": "adam"
+    },
+    "training": {
+        "epochs": 1
     }
 }

@@ -9,8 +9,12 @@ class Parser():
         return self._config_args["Experiment"]
 
     @property
-    def dataset_args(self):
-        return self._config_args["Dataset"]
+    def train_dataset_args(self):
+        return self._config_args["Dataset - metatrain"]
+
+    @property
+    def valid_dataset_args(self):
+        return self._config_args["Dataset - metatest"]
 
     @property
     def model_args(self):
@@ -20,6 +24,9 @@ class Parser():
     def maml_args(self):
         return self._config_args["MAML"]
 
+    @property
+    def training_args(self):
+        return self._config_args["training"]
     
     def parse(self):
-        return self.experiment_args, self.dataset_args, self.model_args, self.maml_args
+        return self.experiment_args, self.train_dataset_args, self.train_dataset_args, self.model_args, self.maml_args, self.training_args

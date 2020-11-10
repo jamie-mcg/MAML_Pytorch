@@ -12,9 +12,11 @@ OPTIMIZER = {
 class MAML(nn.Module):
     def __init__(self, model, alpha, beta, inner_steps, metatrain_dataloader, metatest_dataloader, 
                     inner_criterion="mse", optimizer="adam"):
+        super(MAML, self).__init__()
+
         self._model = model
 
-        self._train_on_gpu = True if torch.is_available() else False
+        self._train_on_gpu = True if torch.cuda.is_available() else False
 
         self._alpha = alpha
         self._beta = beta
@@ -24,14 +26,14 @@ class MAML(nn.Module):
         self._metatrain_dataloader = metatrain_dataloader
         self._metatest_dataloader = metatest_dataloader
 
-        self._inner_criterion = CRITERION[criterion.lower()]()
+        self._inner_criterion = CRITERION[inner_criterion.lower()]()
         self._optimizer = OPTIMIZER[optimizer.lower()](model.parameters(), beta)
 
-    def weight_update(self, weights, grads):
-        for w, g in zip(weights, grads):
-            w -= self._alpha * g
+    # def weight_update(self, weights, grads):
+    #     for w, g in zip(weights, grads):
+    #         w -= self._alpha * g
 
-        return weights
+    #     return weights
 
     def inner_loop(self, data):
         X_train, y_train = data["train"]
@@ -42,14 +44,17 @@ class MAML(nn.Module):
         for inner_step in range(self._inner_steps):
             output = self._model(X_train, temp_weights)
             loss = self._inner_criterion(output, y_train)
+            print(f"inner_step: {inner_step} - Loss: {loss}")
 
             grads = torch.autograd.grad(loss, temp_weights)
             
-            temp_weights = self.weight_update(temp_weights, grads)
+            # temp_weights = self.weight_update(temp_weights, grads)
+            temp_weights = [w - self._alpha * g for w, g in zip(temp_weights, grads)]
 
         mt_output = self._model(X_test, temp_weights)
         mt_loss = self._inner_criterion(mt_output, y_test)
         mt_loss.backward()
+        print(f"Test loss: {mt_loss} \n")
 
         return float(mt_loss)
 
@@ -60,7 +65,7 @@ class MAML(nn.Module):
             epoch_loss = 0
             running_loss = 0
 
-            for data in metatrain_dataloader:
+            for data in self._metatrain_dataloader:
                 running_loss += self.inner_loop(data)
 
                 self._optimizer.step()
