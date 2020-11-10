@@ -6,3 +6,5 @@ __pycache__
 
 maml-cifar-fs/*
 *.ipynb
+
+results/*
