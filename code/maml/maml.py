@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn as nn
 
@@ -11,7 +12,7 @@ OPTIMIZER = {
 
 class MAML(nn.Module):
     def __init__(self, model, alpha, beta, inner_steps, metatrain_dataloader, metatest_dataloader, 
-                    inner_criterion="mse", optimizer="adam"):
+                    inner_criterion="mse", optimizer="adam", batch_size=2):
         super(MAML, self).__init__()
 
         self._model = model
@@ -22,6 +23,7 @@ class MAML(nn.Module):
         self._beta = beta
 
         self._inner_steps = inner_steps
+        self._batch_size = batch_size
 
         self._metatrain_dataloader = metatrain_dataloader
         self._metatest_dataloader = metatest_dataloader
@@ -35,16 +37,13 @@ class MAML(nn.Module):
 
     #     return weights
 
-    def inner_loop(self, data):
-        X_train, y_train = data["train"]
-        X_test, y_test = data["test"]
-
+    def inner_loop(self, X_train, y_train, X_test, y_test):
+        
         temp_weights = [param for param in self._model.parameters()]
 
         for inner_step in range(self._inner_steps):
             output = self._model(X_train, temp_weights)
             loss = self._inner_criterion(output, y_train)
-            print(f"inner_step: {inner_step} - Loss: {loss}")
 
             grads = torch.autograd.grad(loss, temp_weights)
             
@@ -54,7 +53,7 @@ class MAML(nn.Module):
         mt_output = self._model(X_test, temp_weights)
         mt_loss = self._inner_criterion(mt_output, y_test)
         mt_loss.backward()
-        print(f"Test loss: {mt_loss} \n")
+        # print(f"Test loss: {mt_loss} \n")
 
         return float(mt_loss)
 
@@ -65,13 +64,22 @@ class MAML(nn.Module):
             epoch_loss = 0
             running_loss = 0
 
-            for data in self._metatrain_dataloader:
-                running_loss += self.inner_loop(data)
+            for n, data in enumerate(self._metatrain_dataloader):
+                X_train, y_train = data["train"]
+                X_test, y_test = data["test"]
+                self._optimizer.zero_grad()
+
+                losses = list(map(self.inner_loop, X_train, y_train, X_test, y_test))
+                running_loss += np.mean(losses)
+
+                for param in self._model.parameters():
+                    param.grad = param.grad / self._batch_size
 
                 self._optimizer.step()
                 meta_iterations += 1
 
-                # if meta_iterations % 10 == 0:
+                if meta_iterations % 50 == 0:
+                    print(f"Meta iteration: {meta_iterations} .. Running loss: {running_loss / meta_iterations}")
 
     def __call__(self, epochs):
         self.train(epochs)

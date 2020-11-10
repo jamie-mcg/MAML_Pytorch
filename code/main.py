@@ -53,8 +53,8 @@ if __name__ == "__main__":
     # plt.show()
 
     # Create dataloaders
-    train_dataloader = DataLoader(train_dataset, batch_size=1)
-    valid_dataloader = DataLoader(valid_dataset, batch_size=1)
+    train_dataloader = DataLoader(train_dataset, batch_size=2)
+    valid_dataloader = DataLoader(valid_dataset, batch_size=2)
 
     # Create models and MAML objects
     base_learner = BASE_LEARNERS[model_args["type"].lower()](**model_args["args"])
