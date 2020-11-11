@@ -23,7 +23,8 @@ if __name__ == "__main__":
 
     # Take in config file
     cli_parser = argparse.ArgumentParser(description='MAML Experiment.')
-    cli_parser.add_argument('--config', '-c', type=str, help='File containing configuration for experiment.', default='config/linear.json')
+    cli_parser.add_argument('--config', '-c', type=str, help='File containing configuration for experiment.', 
+                                default='config/linear_centers.json')
     args = cli_parser.parse_args()
 
     if args.config:

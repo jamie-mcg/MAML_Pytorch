@@ -14,7 +14,6 @@ task_dict = {
 class TaskDataset(Dataset):
     def __init__(self, parameter_args, transform=None):
         self._transform = transform
-        self._std_dev = parameter_args["std_dev"]
         self._num_tasks = parameter_args["num_tasks"]
         self._task_type = parameter_args["task"].lower()
 
@@ -22,8 +21,16 @@ class TaskDataset(Dataset):
 
     def generate_parameters(self, parameter_args):
         self._parameters = []
-        for parameter in parameter_args["param_centers"]:
-            self._parameters.append(np.random.uniform(parameter, self._std_dev, self._num_tasks))
+        if parameter_args["centers_or_ranges"] == "centers":
+            for parameter, std_dev in zip(parameter_args["params"], parameter_args["std_dev"]):
+                self._parameters.append(np.random.normal(parameter, std_dev, self._num_tasks))
+
+        elif parameter_args["centers_or_ranges"] == "ranges":
+            for parameter in parameter_args["params"]:
+                self._parameters.append(np.random.uniform(parameter[0], parameter[1], self._num_tasks))
+
+        else:
+            print("Please choose either 'centers' or 'ranges' as an input")
         self._parameters = np.array(self._parameters)
 
     def __len__(self):
