@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     # Create a report
     report = ReportManager(exp_args["path"])
-    report.add_section(section="config", config=config)
+    report.add_section(section="config", config_file=config)
     report.save()
 
     # Add data descriptions to report

@@ -15,9 +15,10 @@ class ReportSection(ABC):
         return self.header + self.body
 
 class ReportConfig(ReportSection):
-    def __init__(self, config_file):
+    def __init__(self, path, config_file):
         self._header = "Config"
         self._config = config_file
+        self._path = path
 
     @property
     def body(self):
