@@ -9,13 +9,13 @@
         "task": "linear",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 10000
+        "num_tasks": 1000
     },
     "Dataset - metatest": {
         "task": "linear",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 1000
+        "num_tasks": 100
     },
     "Model": {
         "type": "linear",
