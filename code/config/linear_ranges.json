@@ -1,32 +1,33 @@
 {
     "Experiment": {
         "version": 0.1,
-        "description": "Sinusoidal Tasks experiment using MAML.",
-        "path": "../results/sinusoidal",
+        "description": "Linear Tasks experiment using MAML.",
+        "path": "../results/linear",
         "seed": 1
     },
     "Dataset - metatrain": {
-        "task": "sinusoidal",
+        "task": "linear",
         "centers_or_ranges": "ranges",
-        "params": [[0.1, 5.0], [0.0, 3.14]],
-        "num_tasks": 1000
+        "params": [[2.0, 3.0], [3.0, 4.0]],
+        "std_dev": 0.2,
+        "num_tasks": 10000
     },
     "Dataset - metatest": {
-        "task": "sinusoidal",
+        "task": "linear",
         "centers_or_ranges": "ranges",
-        "params": [[0.1, 5.0], [0.0, 3.14]],
-        "num_tasks": 100
+        "params": [[2.0, 3.0], [3.0, 4.0]],
+        "std_dev": 0.2,
+        "num_tasks": 1000
     },
     "Model": {
-        "type": "mlp",
+        "type": "linear",
         "args": {
             "input_dim": 1,
-            "hidden_dim": 40,
             "output_dim": 1
         }
     },
     "MAML": {
-        "alpha": 0.01,
+        "alpha": 0.05,
         "beta": 0.01,
         "inner_steps": 1,
         "inner_criterion": "mse",
