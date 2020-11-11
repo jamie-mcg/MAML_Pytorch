@@ -1,0 +1,39 @@
+{
+    "Experiment": {
+        "version": 0.1,
+        "description": "Sinusoidal Tasks experiment using MAML.",
+        "path": "../results",
+        "seed": 1
+    },
+    "Dataset - metatrain": {
+        "task": "sinusoidal",
+        "param_centers": [2.0, 3.0],
+        "std_dev": 0.2,
+        "num_tasks": 10
+    },
+    "Dataset - metatest": {
+        "task": "sinusoidal",
+        "param_centers": [2.0, 3.0],
+        "std_dev": 0.2,
+        "num_tasks": 10
+    },
+    "Model": {
+        "type": "mlp",
+        "args": {
+            "input_dim": 1,
+            "hidden_dim": 40,
+            "output_dim": 1
+        }
+    },
+    "MAML": {
+        "alpha": 0.05,
+        "beta": 0.01,
+        "inner_steps": 1,
+        "inner_criterion": "mse",
+        "optimizer": "adam",
+        "print_every": 100
+    },
+    "training": {
+        "epochs": 1
+    }
+}
