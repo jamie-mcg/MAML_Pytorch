@@ -43,10 +43,8 @@ if __name__ == "__main__":
 
     # Create a report
     report = ReportManager(exp_args["path"])
-    report.add_section(section="config", config=config)
+    report.add_section(section="config", config_file=config)
     report.save()
-
-    # Add data descriptions to report
 
     # Create dataset
     train_dataset = TaskDataset(train_dataset_args)
@@ -59,6 +57,9 @@ if __name__ == "__main__":
     # Create models and MAML objects
     base_learner = BASE_LEARNERS[model_args["type"].lower()](**model_args["args"])
 
+    report.add_section(section="model", model=base_learner, model_args=model_args)
+    report.save()
+
     maml = MAML(base_learner, metatrain_dataloader=train_dataloader, metatest_dataloader=valid_dataloader, **maml_args)
 
     # Report details of model and MAML
@@ -67,3 +68,5 @@ if __name__ == "__main__":
     maml.train(**training_args)
 
     # Output results of MAML to report
+    report.add_section(section="training", model=maml)
+    report.save()
