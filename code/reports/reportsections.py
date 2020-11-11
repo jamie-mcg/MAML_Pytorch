@@ -12,7 +12,8 @@ class ReportSection(ABC):
         pass
 
     def __str__(self):
-        return self.header + self.body
+        return self.header + "\n" + self.body + "\n"
+
 
 class ReportConfig(ReportSection):
     def __init__(self, path, config_file):
@@ -26,34 +27,36 @@ class ReportConfig(ReportSection):
         return "\n" + string + "\n"
 
 
-# class ReportExperiment(ReportSection):
-
-
-
-class ReportTraining(ReportSection):
-    def __init__(self, train_losses, valid_losses):
-        self._header = "Training"
-        self._train_losses = train_losses
-        self._valid_losses = valid_losses
+class ReportModel(ReportSection):
+    def __init__(self, path, model, model_args):
+        self._header = "Model"
+        self._model = model
+        self._model_args = model_args
 
     @property
     def body(self):
-        self._body = "#### Training losses \n"
+        self._body = "#### " + self._model.name + "\n"
+        self._body += str(self._model)
+        return self._body + "\n"
+
+
+class ReportTraining(ReportSection):
+    def __init__(self, path, model):
+        self._header = "Training"
+        self._path = path
+
+        self._meta_iterations = model.iterations
+        self._train_losses = model.training_losses
+        self._valid_losses = model.validation_losses
+
+    @property
+    def body(self):
+        self._body = "#### Meta iterations \n"
+        self._body += str(self._meta_iterations) + "\n"
+
+        self._body += "#### Training losses \n"
         self._body += str(self._train_losses) + "\n"
 
         self._body += "#### Validation losses \n"
         self._body += str(self._valid_losses)
-        return "\n" + self._body + "\n"
-
-
-class ReportModel(ReportSection):
-    def __init__(self, model):
-        self._header = "Model"
-        self._model = model
-
-    @property
-    def body(self):
-        self._body = self._model.name + "\n"
-        self._body += str(self._model)
-        return self._body
-
+        return self._body + "\n"

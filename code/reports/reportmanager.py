@@ -1,11 +1,13 @@
 from abc import ABC, abstractstaticmethod
-from .reportsections import ReportConfig
+from .reportsections import *
 
 import os
 from datetime import datetime
 
 SECTIONS = {
-    "config": ReportConfig
+    "config": ReportConfig,
+    "model": ReportModel,
+    "training": ReportTraining
 }
 
 class ReportManager():
@@ -23,9 +25,8 @@ class ReportManager():
         self._sections.append(new_section)
 
     def save(self):
-        # Write to the report and delete current report
-        with open(os.path.join(self._path, "report.md"), "w") as report_file:
+        with open(os.path.join(self._path, "report.md"), "a") as report_file:
             for section in self._sections:
-                print(section)
+                print(str(section))
                 report_file.write(str(section))
         self._sections = []
