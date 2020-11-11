@@ -34,6 +34,9 @@ class MAML(nn.Module):
         self._optimizer = OPTIMIZER[optimizer.lower()](model.parameters(), beta)
 
         self._print_every = print_every
+        self.training_losses = []
+        self.validation_losses = []
+        self.iterations = []
 
     def inner_loop(self, X_train, y_train, X_test, y_test, valid=False):
         
@@ -90,6 +93,9 @@ class MAML(nn.Module):
 
                     print(f"Meta iteration: {meta_iterations} .. Training loss: {running_loss / meta_iterations}")
                     print(f"Validation loss: {mt_valid_loss}")
+                    self.iterations.append(meta_iterations)
+                    self.training_losses.append(running_loss / meta_iterations) 
+                    self.validation_losses.append(mt_valid_loss) 
 
     def __call__(self, epochs):
         self.train(epochs)

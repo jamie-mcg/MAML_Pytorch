@@ -21,7 +21,7 @@ class ReportConfig(ReportSection):
 
     @property
     def body(self):
-        string = json.dumps(self._config)
+        string = json.dumps(self._config, indent=True)
         return "\n" + string + "\n"
 
 
