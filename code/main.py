@@ -62,8 +62,6 @@ if __name__ == "__main__":
 
     maml = MAML(base_learner, metatrain_dataloader=train_dataloader, metatest_dataloader=valid_dataloader, **maml_args)
 
-    # Report details of model and MAML
-
     # Begin training of MAML
     maml.train(**training_args)
 
