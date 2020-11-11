@@ -1,9 +1,9 @@
 import numpy as np
 
 class LinearTask():
-    def __init__(self, a, b, x_min=-5, x_max=5, num_points=5, noise_level=0):
-        self._a = a
-        self._b = b
+    def __init__(self, parameters, x_min=-5, x_max=5, num_points=5, noise_level=0):
+        self._a = parameters[0]
+        self._b = parameters[1]
 
         self._x_train = np.random.uniform(x_min, x_max, num_points)
         self._x_test = np.random.uniform(x_min, x_max, num_points)

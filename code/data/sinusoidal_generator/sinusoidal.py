@@ -1,9 +1,9 @@
 import numpy as np
 
 class SinusoidalTask():
-    def __init__(self, amplitude, phase, x_min=-5, x_max=5, num_points=5, noise_level=0):
-        self._amplitude = amplitude
-        self._phase = phase
+    def __init__(self, parameters, x_min=-5, x_max=5, num_points=5, noise_level=0):
+        self._amplitude = parameters[0]
+        self._phase = parameters[1]
 
         self._x_train = np.random.uniform(x_min, x_max, num_points)
         self._x_test = np.random.uniform(x_min, x_max, num_points)
