@@ -9,13 +9,13 @@
         "task": "sinusoidal",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 10
+        "num_tasks": 1000
     },
     "Dataset - metatest": {
         "task": "sinusoidal",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 10
+        "num_tasks": 100
     },
     "Model": {
         "type": "mlp",
@@ -26,7 +26,7 @@
         }
     },
     "MAML": {
-        "alpha": 0.05,
+        "alpha": 0.01,
         "beta": 0.01,
         "inner_steps": 1,
         "inner_criterion": "mse",
