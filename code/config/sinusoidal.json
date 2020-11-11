@@ -2,7 +2,7 @@
     "Experiment": {
         "version": 0.1,
         "description": "Sinusoidal Tasks experiment using MAML.",
-        "path": "../results",
+        "path": "../results/sinusoidal",
         "seed": 1
     },
     "Dataset - metatrain": {
