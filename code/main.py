@@ -10,12 +10,13 @@ from torch.utils.data import DataLoader
 from data import TaskDataset, Parser
 from reports import ReportManager
 
-from models import LinearRegression
+from models import LinearRegression, MLP
 
 from maml import MAML
 
 BASE_LEARNERS = {
-    "linear": LinearRegression
+    "linear": LinearRegression,
+    "mlp": MLP
 }
 
 if __name__ == "__main__":

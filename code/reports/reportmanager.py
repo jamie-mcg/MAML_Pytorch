@@ -11,12 +11,15 @@ SECTIONS = {
 }
 
 class ReportManager():
-    def __init__(self, path):
-        self._path = path
+    def __init__(self, path_prefix):
+        self._path_prefix = path_prefix
         self._sections = []
 
         dt = datetime.now().strftime("%m%d%Y_%H%M%S")
-        self._path = os.path.join(self._path, dt)
+        if not os.path.exists(self._path_prefix):
+            os.mkdir(self._path_prefix, mode=0o777)
+
+        self._path = os.path.join(self._path_prefix, dt)
 
         os.mkdir(self._path, mode=0o777)
 

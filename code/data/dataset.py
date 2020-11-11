@@ -4,9 +4,11 @@ import torch
 
 from torch.utils.data import Dataset
 from .linear_generator import LinearTask
+from .sinusoidal_generator import SinusoidalTask
 
 task_dict = {
-    "linear": LinearTask
+    "linear": LinearTask,
+    "sinusoidal": SinusoidalTask
 }
 
 class TaskDataset(Dataset):
@@ -22,12 +24,13 @@ class TaskDataset(Dataset):
         self._parameters = []
         for parameter in parameter_args["param_centers"]:
             self._parameters.append(np.random.uniform(parameter, self._std_dev, self._num_tasks))
+        self._parameters = np.array(self._parameters)
 
     def __len__(self):
         return self._num_tasks
 
     def __getitem__(self, idx):
-        task = task_dict[self._task_type](a=self._parameters[0][idx], b=self._parameters[1][idx])
+        task = task_dict[self._task_type](parameters=self._parameters[:,idx])
 
         return {
             "train": (torch.from_numpy(task.x_train).float().view(-1, 1), torch.from_numpy(task.y_train).float().view(-1, 1)),

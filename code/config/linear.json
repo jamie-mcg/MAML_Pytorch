@@ -1,21 +1,21 @@
 {
     "Experiment": {
-        "version": 0.0,
+        "version": 0.1,
         "description": "Linear Tasks experiment using MAML.",
-        "path": "../results",
+        "path": "../results/linear",
         "seed": 1
     },
     "Dataset - metatrain": {
         "task": "linear",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 1000
+        "num_tasks": 10000
     },
     "Dataset - metatest": {
         "task": "linear",
         "param_centers": [2.0, 3.0],
         "std_dev": 0.2,
-        "num_tasks": 100
+        "num_tasks": 1000
     },
     "Model": {
         "type": "linear",
