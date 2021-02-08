@@ -8,3 +8,6 @@ maml-cifar-fs/*
 *.ipynb
 
 results/*
+
+code/data/clusters.py
+code/data/synthetic_data.py

@@ -1,5 +1,3 @@
-
-
 class Parser():
     def __init__(self, config):
         self._config_args = config
